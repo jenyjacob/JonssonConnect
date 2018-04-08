@@ -1,19 +1,11 @@
-/**
- * JonssonConnect Events Page
- * https://github.com/facebook/react-native
- * @flow
- */
- import React, { Component } from 'react';
+import React, { Component } from 'react';
  import { ActivityIndicator, Image, ListView, FlatList, StyleSheet, View } from 'react-native';
  import { TabNavigator, StackNavigator } from "react-navigation";
- import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Text, Title, Button, Left, Body, Right, H1, H2, H3 } from 'native-base';
- import firebaseDbh from '../App';
- import firebaseListNews from '../App';
+ import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Tab, Tabs, Text, Title, Button, Left, Body, Right, H1, H2, H3 } from 'native-base';
  import * as firebase from 'firebase';
 
- export default class Events extends Component {
-
-   constructor(props) {
+ export default class ComputerScience extends Component {
+  constructor(props) {
      super(props);
      this.state = {
        isLoading: true
@@ -27,25 +19,15 @@
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
           isLoading: false,
-          dataSource: ds.cloneWithRows(responseJson.Events),
+          dataSource: ds.cloneWithRows(responseJson.Articles),
         }, function() {
-          // do something with new state
-        });
+          });
       })
       .catch((error) => {
         console.error(error);
       });
   }
 
-   static navigationOptions = {
-     tabBarLabel: 'Events',
-     tabBarIcon: ({ tintcolor }) => (
-       <Image
-        source={require('../images/eventsicon.png')}
-        style={{width: 22, height: 22}}>
-       </Image>
-     )
-   }
 
    render() {
      if (this.state.isLoading) {
@@ -56,9 +38,8 @@
        );
      }
      return (
-       <Container style={styles.containerStyle}>
+       <Container>
         <Content>
-        <Image source={require('../images/jceventsbanner.png')} style={{ height: 180, width: null }}></Image>
          <ListView
            dataSource={this.state.dataSource}
            renderRow={(rowData) => {
@@ -70,43 +51,25 @@
                     <Thumbnail source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmfBRR5T0D2xN1IBPDFLC-c36Q04Rq-gc4sO-n7R5nsujLyASp7Q'}} />
                     <Body>
                     <Text style={styles.hostStyle}>
-                      {rowData.hostedBy} :
+                      {rowData.postedBy}
                     </Text>
                     <Text style={styles.nameStyle}>
-                      {rowData.eventName}
-                    </Text>
-                    <Text style={styles.eventNameStyle}>
-                      {rowData.eventDate} | {rowData.eventLocation}
+                      {rowData.articleNameName}
                     </Text>
                     </Body>
                   </Left>
                 </CardItem>
                 <CardItem cardBody>
-                  <Image source={{uri: rowData.eventImageURL}} style={{height: 100, width: null, flex: 1}}/>
+                  <Image source={{uri: rowData.artcileImageURL}} style={{height: 100, width: null, flex: 1}}/>
                 </CardItem>
-                <CardItem>
-                  <Left>
-                    <Button transparent info>
-                    <Text style={styles.buttonStyle}>
-                      Attending
-                    </Text>
-                    </Button>
-                  </Left>
-                  <Body>
-                    <Button transparent primary>
-                    <Text style={styles.buttonStyle}>
-                      Interested
-                    </Text>
-                    </Button>
-                  </Body>
-                  <Right>
-                  <Button transparent success onPress={() => this.props.navigation.navigate("EventDetails", {rowData})}>
-                  <Text style={styles.buttonStyle}>
-                    Details
-                  </Text>
-                  </Button>
-                  </Right>
-                </CardItem>
+                <Text style={{fontSize: 14, fontWeight: '800'}}></Text>
+                <Text style={styles.summaryStyle}>
+                  {rowData.articleSummary}
+                </Text>
+                <Text style={{fontSize: 14, fontWeight: '800'}}></Text>
+                <Button full bordered light onPress={() => this.props.navigation.navigate("ArticleDetails", {rowData})}>
+                  <Text style={{fontSize: 10, fontWeight: '400', color: '#104E8B'}}>View Article</Text>
+                </Button>
               </Card>
              )
            }}
@@ -118,9 +81,6 @@
  }
 
  const styles = StyleSheet.create({
-  containerStyle: {
-     backgroundColor: '#F6F6F6',
-  },
   hostStyle: {
     fontWeight: '800',
     fontSize: 14,
@@ -134,6 +94,10 @@
   },
   eventDescriptionStyle: {
     fontSize: 10,
+  },
+  summaryStyle: {
+    fontSize: 11,
+    paddingTop: 4,
   },
   buttonStyle: {
     fontSize: 12,
@@ -151,7 +115,7 @@
     elevation: 1,
   },
   searchbarColor: {
-    backgroundColor: '#0039A6',
+    backgroundColor: '#00A1DE',
   },
   searchButton: {
     fontSize: 12,

@@ -6,7 +6,7 @@ import React, { Component } from 'react';
  import firebaseListNews from '../App';
  import * as firebase from 'firebase';
 
- export default class Events extends Component {
+ export default class EventDetails extends Component {
 
    constructor(props) {
      super(props);
@@ -67,6 +67,13 @@ import React, { Component } from 'react';
               <Text style={{fontSize: 14, fontWeight: '800'}}>Details</Text>
               <Text style={{fontSize: 14, fontWeight: '800'}}></Text>
               <Text style={styles.descriptionStyle}>{this.props.navigation.state.params.rowData.eventDescription}</Text>
+              </Body>
+            </CardItem>
+            <CardItem>
+              <Body>
+              <Button block bordered>
+              <Text style={{fontSize: 12, fontWeight: '400'}}>Attend</Text>
+              </Button>
               </Body>
             </CardItem>
           </Card>

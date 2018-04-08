@@ -4,11 +4,9 @@
  * @flow
  */
  import React, { Component } from 'react';
- import { ActivityIndicator, Image, ListView, FlatList, StyleSheet, View } from 'react-native';
+ import { ActivityIndicator, Image, ListView, FlatList, StyleSheet, View, TextInput, ImageBackground } from 'react-native';
  import { TabNavigator, StackNavigator } from "react-navigation";
  import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Text, Title, Button, Left, Body, Right, H1, H2, H3 } from 'native-base';
- import firebaseDbh from '../App';
- import firebaseListNews from '../App';
  import * as firebase from 'firebase';
 
  export default class Jobs extends Component {
@@ -28,6 +26,7 @@
         this.setState({
           isLoading: false,
           dataSource: ds.cloneWithRows(responseJson.Jobs),
+          data: responseJson.Jobs,
         }, function() {
           // do something with new state
         });
@@ -47,6 +46,8 @@
      )
    }
 
+
+
    render() {
      if (this.state.isLoading) {
        return (
@@ -56,35 +57,38 @@
        );
      }
      return (
-       <Container>
+       <Container style={styles.containerStyle}>
         <Content>
-        <Image source={require('../images/jobsBanner.jpg')} style={{ height: 180, width: null }}></Image>
+        <Image source={require('../images/jcjobsbanner.png')} style={{ height: 180, width: null }}></Image>
+        <Content style={{ backgroundColor: '#f8f6f6'}}>
+          <Text style={styles.colorHeader}>Trending<Text style={styles.bigHeader}> Jobs</Text> </Text>
+          <Text style={{fontWeight: '800', color: '#008542', paddingLeft: 15}}>________</Text>
+        </Content>
          <ListView
            dataSource={this.state.dataSource}
            renderRow={(rowData) => {
              const {uri} = rowData;
              return (
-               <Card bordered>
-                <CardItem>
-                  <Left>
-                    <Thumbnail square source={{uri: rowData.companyImageURL}} />
-                    <Body>
-                    <Text style={styles.positionTitleStyle}>
-                      {rowData.positionTitle}
-                    </Text>
-                    <Text style={styles.companyNameStyle}>
-                      {rowData.companyName}
-                    </Text>
-                    <Text style={styles.jobLocationStyle}>
-                      {rowData.jobLocation}
-                    </Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-                <Button full bordered light onPress={() => this.props.navigation.navigate("JobsDetails", {rowData})}>
-                  <Text style={{fontSize: 10, fontWeight: '400', color: '#104E8B'}}>View Information</Text>
-                </Button>
-              </Card>
+               <Content>
+                <List style={{ backgroundColor: '#FFFFFF'}}>
+                  <ListItem>
+                    <Left>
+                      <Thumbnail square source={{uri: rowData.companyImageURL}} />
+                      <Body>
+                        <Text onPress={() => this.props.navigation.navigate("JobsDetails", {rowData})} style={styles.positionTitleStyle}>
+                          {rowData.positionTitle}
+                        </Text>
+                        <Text onPress={() => this.props.navigation.navigate("JobsDetails", {rowData})} style={styles.companyNameStyle}>
+                          {rowData.companyName}
+                        </Text>
+                        <Text onPress={() => this.props.navigation.navigate("JobsDetails", {rowData})} style={styles.jobLocationStyle}>
+                          {rowData.jobLocation}
+                        </Text>
+                      </Body>
+                    </Left>
+                  </ListItem>
+                </List>
+              </Content>
              )
            }}
          />
@@ -95,6 +99,25 @@
  }
 
  const styles = StyleSheet.create({
+  listStyle: {
+     backgroundColor: '#FFFFFF',
+  },
+  bigHeader: {
+    fontSize: 18,
+    fontWeight: '800',
+    paddingTop: 10,
+    paddingLeft: 15,
+  },
+  colorHeader: {
+    fontSize: 18,
+    fontWeight: '800',
+    paddingTop: 10,
+    paddingLeft: 15,
+    color: '#008542',
+  },
+  containerStyle: {
+    backgroundColor: '#FFFFFF',
+  },
   companyNameStyle: {
     fontWeight: '500',
     fontSize: 12,
@@ -120,7 +143,7 @@
     borderBottomWidth: 0,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
+    shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 1,
   },
@@ -130,5 +153,14 @@
   searchButton: {
     fontSize: 12,
     color: '#ffffff',
+  },
+  textInput: {
+    height: 30,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    marginBottom: 5,
+    marginVertical: 5,
+    marginHorizontal: 5,
   },
 });

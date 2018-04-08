@@ -33,7 +33,7 @@ import React, { Component } from 'react';
   }
 
    static navigationOptions = {
-     tabBarLabel: 'Events',
+     tabBarLabel: 'Home',
      tabBarIcon: ({ tintcolor }) => (
        <Image
         source={require('../images/homeicon.png')}

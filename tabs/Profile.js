@@ -1,62 +1,65 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Image, ListView, FlatList, StyleSheet, View } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Text, Title, Button, Left, Body, Right, H1, H2, H3 } from 'native-base';
-import firebaseDbh from '../App';
-import firebaseListNews from '../App';
-import * as firebase from 'firebase';
-import LoginScreen from '../Screens/LoginScreen';
+ import { ActivityIndicator, AsyncStorage, Image, ListView, FlatList, StyleSheet, TextInput, View } from 'react-native';
+ import { TabNavigator, StackNavigator } from "react-navigation";
+ import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Tab, Tabs, Text, Title, Button, Left, Body, Right, H1, H2, H3, } from 'native-base';
+ import * as firebase from 'firebase';
 
-export default class Profile extends Component {
-
+ export default class Profile extends Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true
-    }
-  }
+     super(props);
+     this.state = {
+       isLoading: true
+     }
+   }
 
-  componentDidMount() {
-   return fetch('https://jonssonconnect.firebaseio.com/.json')
-     .then((response) => response.json())
-     .then((responseJson) => {
-       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-       this.setState({
-         isLoading: false,
-         dataSource: ds.cloneWithRows(responseJson.Events),
-       }, function() {
-         // do something with new state
-       });
-     })
-     .catch((error) => {
-       console.error(error);
+   async componentDidMount() {
+     this.setState({
+       firstName: await AsyncStorage.getItem('firstName'),
+       lastName: await AsyncStorage.getItem('lastName'),
+       email: await AsyncStorage.getItem('email'),
+       summary: await AsyncStorage.getItem('summary'),
+        userPhoto: await AsyncStorage.getItem('userPhoto'),
+       token: await AsyncStorage.getItem('token'),
+       isLoading: false
      });
+   }
+
+   static navigationOptions = {
+     tabBarLabel: 'Profile',
+     tabBarIcon: ({ tintcolor }) => (
+       <Image
+        source={require('../images/temocicon.png')}
+        style={{width: 30, height: 30}}>
+       </Image>
+     )
+   }
+
+   render() {
+     if (this.state.isLoading) {
+       return (
+         <View style={{flex: 1, paddingTop: 20}}>
+           <ActivityIndicator />
+         </View>
+       );
+     }
+     return (
+       <Container style={styles.containerStyle}>
+        <Content>
+
+
+
+         </Content>
+       </Container>
+     )
+   }
  }
 
-  static navigationOptions = {
-    tabBarLabel: 'Profile',
-    tabBarIcon: ({ greencolor }) => (
-      <Image
-       source={require('../images/profileicon.png')}
-       style={{width: 30, height: 30}}>
-      </Image>
-    )
-  }
-
-  render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, paddingTop: 20}}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-    return (
-
-       <View>
-       <LoginScreen/>
-        </View>
-
-    )
-  }
-}
+ const styles = StyleSheet.create({
+  containerStyle: {
+    backgroundColor: '#F6F6F6',
+  },
+   cardStyle: {
+     paddingTop: 30,
+     alignItems: 'center',
+   }
+});
