@@ -4,12 +4,13 @@
  * @flow
  */
  import React, { Component } from 'react';
- import { ActivityIndicator, Image, ListView, FlatList, StyleSheet, View } from 'react-native';
+ import { ActivityIndicator, AsyncStorage, Image, ListView, FlatList, StyleSheet, TouchableHighlight, View } from 'react-native';
  import { TabNavigator, StackNavigator } from "react-navigation";
- import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Text, Title, Button, Left, Body, Right, H1, H2, H3 } from 'native-base';
- import firebaseDbh from '../App';
- import firebaseListNews from '../App';
+ import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Tabs, Tab, Text, Title, Button, Left, Body, Right, H1, H2, H3} from 'native-base';
  import * as firebase from 'firebase';
+
+ import firebaseApp from './EventDetails';
+ import config from './EventDetails';
 
  export default class Events extends Component {
 
@@ -29,12 +30,15 @@
           isLoading: false,
           dataSource: ds.cloneWithRows(responseJson.Events),
         }, function() {
-          // do something with new state
         });
       })
       .catch((error) => {
         console.error(error);
       });
+  }
+
+  async filterEvents() {
+
   }
 
    static navigationOptions = {
@@ -59,55 +63,60 @@
        <Container style={styles.containerStyle}>
         <Content>
         <Image source={require('../images/jceventsbanner.png')} style={{ height: 180, width: null }}></Image>
+        <Content style={{ backgroundColor: '#f8f6f6'}}>
+        </Content>
+        {/*
+        <Tabs onchangeTab={this.filterEvents} style={{}} tabBarUnderlineStyle={{ backgroundColor: '#C75B12'}} tabBarPosition="bottom" >
+          <Tab
+            tabstyle={{ }}
+            textStyle={{fontSize: 13, fontWeight: '100'}}
+            activeTextStyle={{fontSize: 13, fontWeight: '100', color: '#C75B12'}}
+            heading='All Events'
+          >
+          </Tab>
+          <Tab
+            tabstyle={{ }}
+            textStyle={{fontSize: 13, fontWeight: '100'}}
+            activeTextStyle={{fontSize: 13, fontWeight: '100', color: '#C75B12'}}
+            heading='Most Popular'
+          >
+          </Tab>
+          <Tab
+            tabstyle={{ }}
+            textStyle={{fontSize: 13, fontWeight: '100'}}
+            activeTextStyle={{fontSize: 13, fontWeight: '100', color: '#C75B12'}}
+            heading='Newest'
+          >
+          </Tab>
+         </Tabs>
+         */}
          <ListView
            dataSource={this.state.dataSource}
            renderRow={(rowData) => {
              const {uri} = rowData;
              return (
-               <Card>
-                <CardItem>
-                  <Left>
-                    <Thumbnail source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmfBRR5T0D2xN1IBPDFLC-c36Q04Rq-gc4sO-n7R5nsujLyASp7Q'}} />
+               <Content>
+                <List style={{ backgroundColor: '#FFFFFF'}}>
+                  <ListItem>
                     <Body>
-                    <Text style={styles.hostStyle}>
-                      {rowData.hostedBy} :
-                    </Text>
-                    <Text style={styles.nameStyle}>
-                      {rowData.eventName}
-                    </Text>
-                    <Text style={styles.eventNameStyle}>
-                      {rowData.eventDate} | {rowData.eventLocation}
-                    </Text>
+                      <Text style={{fontWeight: '800', fontSize: 16}}>{rowData.eventTitle}</Text>
+                      <Text style={{fontWeight: '200', fontSize: 12, paddingTop: 5}}>{rowData.eventDate}</Text>
+                      <Text style={{fontWeight: '100', fontSize: 12, color: '#757575', paddingTop: 5}}>{rowData.eventLocation}</Text>
+                      <Text style={{fontWeight: '800', fontSize: 22}}></Text>
+                      <TouchableHighlight
+                        onPress={
+                        () => this.props.navigation.navigate("EventDetails", {rowData})}
+                        >
+                        <Image
+                          style={{ height: 220, width: null, borderRadius: 10}}
+                          source={{ uri: rowData.eventImageURL}}
+                        />
+                      </TouchableHighlight>
                     </Body>
-                  </Left>
-                </CardItem>
-                <CardItem cardBody>
-                  <Image source={{uri: rowData.eventImageURL}} style={{height: 100, width: null, flex: 1}}/>
-                </CardItem>
-                <CardItem>
-                  <Left>
-                    <Button transparent info>
-                    <Text style={styles.buttonStyle}>
-                      Attending
-                    </Text>
-                    </Button>
-                  </Left>
-                  <Body>
-                    <Button transparent primary>
-                    <Text style={styles.buttonStyle}>
-                      Interested
-                    </Text>
-                    </Button>
-                  </Body>
-                  <Right>
-                  <Button transparent success onPress={() => this.props.navigation.navigate("EventDetails", {rowData})}>
-                  <Text style={styles.buttonStyle}>
-                    Details
-                  </Text>
-                  </Button>
-                  </Right>
-                </CardItem>
-              </Card>
+                  </ListItem>
+                </List>
+               </Content>
+
              )
            }}
          />
@@ -118,6 +127,19 @@
  }
 
  const styles = StyleSheet.create({
+  bigHeader: {
+     fontSize: 18,
+     fontWeight: '800',
+     paddingTop: 10,
+     paddingLeft: 15,
+  },
+  colorHeader: {
+     fontSize: 18,
+     fontWeight: '800',
+     paddingTop: 10,
+     paddingLeft: 15,
+     color: '#0039A6',
+  },
   containerStyle: {
      backgroundColor: '#F6F6F6',
   },

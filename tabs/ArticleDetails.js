@@ -2,8 +2,6 @@ import React, { Component } from 'react';
  import { ActivityIndicator, Image, ListView, FlatList, StyleSheet, View } from 'react-native';
  import { TabNavigator, StackNavigator } from "react-navigation";
  import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Text, Title, Button, Left, Body, Right, H1, H2, H3 } from 'native-base';
- import firebaseDbh from '../App';
- import firebaseListNews from '../App';
  import * as firebase from 'firebase';
 
  export default class ArticleDetails extends Component {
@@ -32,15 +30,15 @@ import React, { Component } from 'react';
       });
   }
 
-   static navigationOptions = {
-     tabBarLabel: 'Home',
-     tabBarIcon: ({ tintcolor }) => (
-       <Image
-        source={require('../images/homeicon.png')}
-        style={{width: 22, height: 22}}>
-       </Image>
-     )
-   }
+  static navigationOptions = {
+    tabBarLabel: 'Home',
+    tabBarIcon: ({ tintcolor }) => (
+      <Image
+       source={require('../images/temocicon.png')}
+       style={{width: 32, height: 32}}>
+      </Image>
+    )
+  }
 
    render() {
      if (this.state.isLoading) {
@@ -53,13 +51,16 @@ import React, { Component } from 'react';
      return (
        <Container>
        <Content>
-       <Image source={{uri: this.props.navigation.state.params.rowData.artcileImageURL}} style={{ height: 200, width: null }}></Image>
+       <Image source={{uri: this.props.navigation.state.params.rowData.articleImageURL}} style={{ height: 200, width: null }}></Image>
        <Card style={{flex: 0}}>
            <CardItem>
              <Body>
                <Text style={styles.articlenameStyle}>{this.props.navigation.state.params.rowData.articleName}</Text>
                <Text style={{fontSize: 14, fontWeight: '800'}}></Text>
-               <Text style={{fontSize: 14,color: '#808080',}}>Published on</Text>
+               <Text style={{fontSize: 14, color: '#808080',}}>Published on {this.props.navigation.state.params.rowData.postedOn}</Text>
+               <Text style={{fontSize: 12, fontWeight: '100', color: "#b6b6b6",}}>_____________________________________________________________</Text>
+               <Text style={{fontSize: 12, fontWeight: '800'}}></Text>
+               <Text style={{fontSize: 14, fontWeight: '800'}}>Article Highlights</Text>
                <Text style={{fontSize: 12, fontWeight: '800'}}></Text>
                <Text style={styles.contentStyle}>{this.props.navigation.state.params.rowData.articleContent}</Text>
              </Body>

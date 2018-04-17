@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
- import { ActivityIndicator, Image, ListView, FlatList, StyleSheet, View, ImageBackground,Linking } from 'react-native';
+ import { ActivityIndicator, Image, ListView, Linking, FlatList, StyleSheet, View, ImageBackground } from 'react-native';
  import { TabNavigator, StackNavigator } from "react-navigation";
  import { Container, Header, Content, Card, Col, CardItem, Grid, Thumbnail, List, ListItem, Icon, Item, Input, Text, Title, Button, Left, Body, Right, Row, H1, H2, H3 } from 'native-base';
- import firebaseDbh from '../App';
- import firebaseListNews from '../App';
  import * as firebase from 'firebase';
 
  export default class JobsDetails extends Component {
@@ -67,8 +65,8 @@ import React, { Component } from 'react';
             </ImageBackground>
           </View>
           <Card style={{ backgroundColor: '#f8f6f6'}}>
-            <Button full onPress={()=>{Linking.openURL(this.props.navigation.state.params.rowData.applicationURL)}}>
-              <Text style={{ fontSize: 14, fontWeight: '100'}}>Apply Now</Text>
+            <Button full style={styles.buttonStyle} onPress={ ()=>{ Linking.openURL(this.props.navigation.state.params.rowData.applicationURL)}}>
+              <Text style={{ fontSize: 14, fontWeight: '500'}}>Apply Now</Text>
             </Button>
           </Card>
           <Text style={{fontSize: 14, fontWeight: '800', paddingLeft: 15, paddingTop: 10}}>Position Overview</Text>
@@ -98,12 +96,16 @@ import React, { Component } from 'react';
       fontWeight: '600',
       fontSize: 12,
   },
+  buttonStyle: {
+     backgroundColor: '#5BC6E8',
+     height: 40,
+  },
   nameStyle: {
      fontWeight: '600',
      fontSize: 16,
   },
   descriptionStyle: {
-     fontWeight: '400',
+     fontWeight: '100',
      fontSize: 12,
      paddingLeft: 15,
      paddingTop: 10,
