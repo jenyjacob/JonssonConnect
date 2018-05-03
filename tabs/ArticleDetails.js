@@ -48,6 +48,15 @@ import React, { Component } from 'react';
          </View>
        );
      }
+     const monthNames = ["January", "February", "March", "April", "May", "June",
+       "July", "August", "September", "October", "November", "December"
+     ]
+
+     const date = new Date()
+     var month = monthNames[date.getMonth()]
+     var year = date.getFullYear()
+     var day = date.getDate()
+
      return (
        <Container>
        <Content>
@@ -57,11 +66,12 @@ import React, { Component } from 'react';
              <Body>
                <Text style={styles.articlenameStyle}>{this.props.navigation.state.params.rowData.articleName}</Text>
                <Text style={{fontSize: 14, fontWeight: '800'}}></Text>
-               <Text style={{fontSize: 14, color: '#808080',}}>Published on {this.props.navigation.state.params.rowData.postedOn}</Text>
+               <Text style={{fontSize: 14, color: '#808080',}}>Published on {monthNames[parseInt(this.props.navigation.state.params.rowData.postedOn.toString().substr(5, 5).substr(0, 2)) - 1]} {parseInt(this.props.navigation.state.params.rowData.postedOn.toString().substr(8, 2))}, {this.props.navigation.state.params.rowData.postedOn.toString().substr(0, 4)} </Text>
+
                <Text style={{fontSize: 12, fontWeight: '100', color: "#b6b6b6",}}>_____________________________________________________________</Text>
                <Text style={{fontSize: 12, fontWeight: '800'}}></Text>
-               <Text style={{fontSize: 14, fontWeight: '800'}}>Article Highlights</Text>
-               <Text style={{fontSize: 12, fontWeight: '800'}}></Text>
+               <Text style={{fontSize: 14, fontWeight: '800'}}> Article Highlights</Text>
+               <Text style={{fontSize: 12, fontWeight: '100'}}></Text>
                <Text style={styles.contentStyle}>{this.props.navigation.state.params.rowData.articleContent}</Text>
              </Body>
            </CardItem>

@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   StatusBar,
   TouchableHighlight,
+  
 } from 'react-native'
 
 import { Container, Header, Content, Card, CardItem, Thumbnail, List, ListItem, Icon, Item, Input, Tab, Tabs, Text, Title, Button, Left, Body, Right, H1, H2, H3, } from 'native-base';
@@ -79,8 +80,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
 })
+  export const onSignOut = () => AsyncStorage.removeItem(LOGIN_TOKEN);
 
-export default class Login extends React.Component {
+export default class LoginScreen extends React.Component {
 
   state = {
     access_token: undefined,
@@ -94,6 +96,7 @@ export default class Login extends React.Component {
     this.state = { isLoggedIn: false };
   }
 
+
   async componentWillMount() {
     let LOGIN_TOKEN = await AsyncStorage.getItem('LOGIN_TOKEN');
     if (LOGIN_TOKEN == null){
@@ -103,6 +106,7 @@ export default class Login extends React.Component {
        this.props.navigation.navigate("HomeFeedStack");
     }
   }
+
 
   async getUser({ access_token }) {
     this.setState({ refreshing: true })
@@ -115,6 +119,9 @@ export default class Login extends React.Component {
       'summary',
       'picture-url',
       'id',
+      'headline',
+      'picture-urls::(original)',
+     // 'industry',
     ]
 
     const response = await fetch(`${baseApi}~:(${params.join(',')})?format=json`, {
@@ -128,6 +135,7 @@ export default class Login extends React.Component {
        ...payload,
         refreshing: false,
     })
+
     let value = this.state.pictureUrl
     if (value == null){
        AsyncStorage.setItem('userPhoto', 'https://www.utdallas.edu/brand/files/Temoc_Orange.png')
@@ -138,9 +146,9 @@ export default class Login extends React.Component {
     AsyncStorage.setItem('lastName', this.state.lastName),
     AsyncStorage.setItem('firstName', this.state.firstName),
     AsyncStorage.setItem('email', this.state.emailAddress),
-    //AsyncStorage.setItem('summary', this.state.summary),
-    //AsyncStorage.setItem('userPhoto', this.state.pictureUrl),
+    AsyncStorage.setItem('headline', this.state.headline),
     AsyncStorage.setItem('userID', this.state.id),
+
     AsyncStorage.setItem('LOGIN_TOKEN', "loggedIn"),
     AsyncStorage.getItem('loggedInStatus',
     (value) => {
@@ -163,19 +171,22 @@ export default class Login extends React.Component {
   }
 
   render() {
-    const { emailAddress, pictureUrl, refreshing, firstName, lastName, summary, id, } = this.state;
+    const { emailAddress, pictureUrl, refreshing, firstName, lastName, summary, id,headlinen } = this.state;
     if (this.state.loggedInStatus === 'loggedIn') {
       this.props.navigation.navigate("HomeFeedStack")
     }
     return (
       <View style={styles.container}>
+      <StatusBar
+backgroundColor="#69BE28"
+/>
         <ImageBackground
           style={{ height: 475, width: 500}}
           style={styles.backdrop}
           blurRadius={1}>
           <View style={styles.backdropView}>
-            <Image source={{ uri: 'https://www.utdallas.edu/brand/files/Temoc_Orange.png'}} style={{ height: 180, width: 150, paddingTop: 100}}></Image>
-            <Text style={{ fontSize: 32, fontWeight: '800'}}>Jonsson <Text style={{ fontSize: 32, fontWeight: '100'}}>Connect </Text></Text>
+            <Image source={require('../images/Temoc_Orange.png')} style={{ height: 180, width: 150, paddingTop: 100}}></Image>
+            <Text style={{ fontSize: 32, fontWeight: '800'}}>Jonsson <Text style={{ fontSize: 32, fontWeight: '200'}}>Connect </Text></Text>
             <Text style={{ fontSize: 22, fontWeight: '200', paddingTop: 20}}>Begin exploring oppotunities only offered by the Jonsson School. </Text>
             <Text style={{ fontSize: 8, position: "absolute", bottom: -150}}></Text>
           </View>
@@ -200,7 +211,7 @@ export default class Login extends React.Component {
           <View style={styles.container}>
               <TouchableHighlight onPress={() => this.modal.open()}>
                 <Button onPress={() => this.modal.open()} style={{ width: 500}} rounded full primary>
-                  <Text style={{ fontWeight: '100', fontSize: 16}}> <Image source={require('../images/linkedin-logo.png')} style={{width: 25, height: 25}}></Image>Sign in with LinkedIn</Text>
+                  <Text style={{ fontWeight: '100', fontSize: 16}}> <Image source={require('../images/linkedin-logo.png')} style={{width: 50, height: 50}}></Image>Sign in with LinkedIn</Text>
                 </Button>
               </TouchableHighlight>
               <Text style={{ fontSize: 10, fontWeight: '100'}}></Text>

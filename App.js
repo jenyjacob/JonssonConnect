@@ -29,6 +29,8 @@
   import JobsDetails from './tabs/JobsDetails'
   import LoginScreen from './Screens/LoginScreen'
   import ArticleDetails from './tabs/ArticleDetails'
+  // import Logout from './Screens/Logout'
+  import { StatusBar } from 'react-native'
    // import TabNavigator from 'react-native-tab-navigator'
  import * as firebase from 'firebase';
 
@@ -40,10 +42,14 @@
     header: null
  };
     render() {
-      console.log("This should be printed in console!");
 
       return (
-        <AppNavigator/>
+
+        <StatusBar
+  backgroundColor="rgba(0, 0, 0, 0.20)"
+  animated
+/>,
+   <AppNavigator/>
       );
     }
   }
@@ -52,8 +58,9 @@
      screen: Home,
      navigationOptions:({navigation}) => ({
       title: "News Feed",
+
       headerStyle: { paddingRight: 10, paddingLeft: 10, backgroundColor: '#f8f6f6'},
-      headerTitleStyle: { fontSize: 18, fontWeight: '800',alignSelf:'center'},
+     headerTitleStyle: { fontSize: 18, fontWeight: '800', alignSelf:'center'},
     })
    },
    ArticleDetails: {screen: ArticleDetails},
@@ -66,7 +73,7 @@
 
       title: "Events",
       headerStyle: { paddingRight: 50, paddingLeft: 10, backgroundColor: '#f8f6f6'},
-       headerTitleStyle: { fontSize: 18, fontWeight: '800',alignSelf:'center'},
+       headerTitleStyle: { fontSize: 18, fontWeight: '800'},
     })
    },
    EventDetails: {screen: EventDetails},
@@ -77,7 +84,7 @@
       navigationOptions:({navigation}) => ({
        title: "Job Details",
        headerStyle: { paddingRight: 10, paddingLeft: 10, backgroundColor: '#f8f6f6'},
-       headerTitleStyle: { fontSize: 18, fontWeight: '800',alignSelf:'center' },
+       headerTitleStyle: { fontSize: 18, fontWeight: '800' },
      })},
     JobsDetails: {screen: JobsDetails},
   });
@@ -98,6 +105,9 @@
       inactiveBackgroundColor: '#ffffff',
       inactiveTintColor: '#B7C3D0',
       swipingEnbled: 'false',
+      indicatorStyle: {
+           backgroundColor: '#ffffff',
+       },
       style:{
         backgroundColor:'transparent'
       }
@@ -112,11 +122,13 @@
      })},
     TabNav:{screen: TabNav,
      navigationOptions:({navigation}) => ({
-     header: null})
+     header: null})}
+
+     // Logout:{screen: Logout}
 
 
     // navigationOptions:{ header:{ visible:false },
-  }});
+  });
 
   /*AppScreenNavigator.navigationOptions = {
     title: "App"
